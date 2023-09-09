@@ -1,13 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace BancaDelTempo_ferrari
 {
@@ -106,25 +102,15 @@ namespace BancaDelTempo_ferrari
             UpdateUI();
         }
 
-        // Metodo per calcolare il devito di tutti i soci
-        /*/public void CalcolaDebito()
-        {
-            foreach (Prestazione prestazione in prestazioni)
-            {
-                prestazione.Erogatore.Debito -= prestazione.Ore;
-                MessageBox.Show(prestazione.Erogatore.ToString());
-                prestazione.Ricevente.Debito += prestazione.Ore;
-                MessageBox.Show(prestazione.Ricevente.ToString());
-            }
-            foreach (Socio p in soci)
-            {
-                MessageBox.Show(p.ToString());
-            }
-        }/*/
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //SaveData();
+            SaveData();
+        }
+
+        private void InitializeComponent()
+        {
+           
+
         }
     }
 }
