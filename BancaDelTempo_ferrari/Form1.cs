@@ -53,10 +53,10 @@ namespace BancaDelTempo_ferrari
         private void UpdateUI()
         {
             // Aggiornare la visualizzazione dei dati nell'interfaccia grafica
-            lstSoci.Items.Clear();
+            listSoci.Items.Clear();
             foreach (Socio socio in soci)
             {
-                lstSoci.Items.Add($"{socio.Cognome}, {socio.Nome} - Tel: {socio.Telefono}");
+                listSoci.Items.Add($"{socio.Cognome}, {socio.Nome} - Tel: {socio.Telefono}");
             }
         }
 
@@ -65,34 +65,24 @@ namespace BancaDelTempo_ferrari
             // Logica per produrre l'elenco dei soci con debito
             List<Socio> debitori = soci.Where(s => s.CalcolaDebito() > 0).ToList();
 
-            lstDebito.Items.Clear();
+            listDebito.Items.Clear();
             foreach (Socio debitor in debitori)
             {
-                lstDebito.Items.Add($"{debitor.Cognome}, {debitor.Nome} | Debito: {debitor.Debito}");
+                listDebito.Items.Add($"{debitor.Cognome}, {debitor.Nome} | Debito: {debitor.Debito}");
             }
         }
 
-        private void btnSegreteria_Click(object sender, EventArgs e)
-        {
-            // Logica per visualizzare i soci della segreteria
-            List<Socio> segreteriaSoci = soci.Where(s => s.Segreteria).ToList();
-
-            lstSegreteria.Items.Clear();
-            foreach (Socio segreteriaSocio in segreteriaSoci)
-            {
-                lstSegreteria.Items.Add($"{segreteriaSocio.Cognome}, {segreteriaSocio.Nome} - Tel: {segreteriaSocio.Telefono}");
-            }
-        }
+       
 
         private void btnOrdinaPrestazioni_Click(object sender, EventArgs e)
         {
-            // Logica per ordinare e visualizzare le prestazioni
+            //  ordina e visualizza le prestazioni
             List<Prestazione> prestazioniOrdinate = prestazioni.OrderByDescending(p => p.Ore).ToList();
 
-            lstPrestazioni.Items.Clear();
+            listPrestazioni.Items.Clear();
             foreach (Prestazione prestazione in prestazioniOrdinate)
             {
-                lstPrestazioni.Items.Add($"{prestazione.Erogatore.Cognome}, {prestazione.Erogatore.Nome} -> {prestazione.Ricevente.Cognome}, {prestazione.Ricevente.Nome} - {prestazione.Ore} ore di {prestazione.Tipo}");
+                listPrestazioni.Items.Add($"{prestazione.Erogatore.Cognome}, {prestazione.Erogatore.Nome} -> {prestazione.Ricevente.Cognome}, {prestazione.Ricevente.Nome} - {prestazione.Ore} ore di {prestazione.Tipo}");
             }
         }
 
@@ -102,6 +92,7 @@ namespace BancaDelTempo_ferrari
             UpdateUI();
         }
 
+       
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             SaveData();
@@ -109,8 +100,84 @@ namespace BancaDelTempo_ferrari
 
         private void InitializeComponent()
         {
-           
+            this.listSegreteria = new System.Windows.Forms.ListBox();
+            this.btnSegreteria = new System.Windows.Forms.Button();
+            this.listSoci = new System.Windows.Forms.ListBox();
+            this.listDebito = new System.Windows.Forms.ListBox();
+            this.btnDebito = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // listSegreteria
+            // 
+            this.listSegreteria.FormattingEnabled = true;
+            this.listSegreteria.ItemHeight = 16;
+            this.listSegreteria.Location = new System.Drawing.Point(12, 75);
+            this.listSegreteria.Name = "listSegreteria";
+            this.listSegreteria.Size = new System.Drawing.Size(219, 324);
+            this.listSegreteria.TabIndex = 0;
+            // 
+            // btnSegreteria
+            // 
+            this.btnSegreteria.Location = new System.Drawing.Point(12, 30);
+            this.btnSegreteria.Name = "btnSegreteria";
+            this.btnSegreteria.Size = new System.Drawing.Size(153, 39);
+            this.btnSegreteria.TabIndex = 1;
+            this.btnSegreteria.Text = "Segreteria";
+            this.btnSegreteria.UseVisualStyleBackColor = true;
+            this.btnSegreteria.Click += new System.EventHandler(this.btnSegreteria_Click_1);
+            // 
+            // listSoci
+            // 
+            this.listSoci.FormattingEnabled = true;
+            this.listSoci.ItemHeight = 16;
+            this.listSoci.Location = new System.Drawing.Point(330, 75);
+            this.listSoci.Name = "listSoci";
+            this.listSoci.Size = new System.Drawing.Size(218, 324);
+            this.listSoci.TabIndex = 2;
+            // 
+            // listDebito
+            // 
+            this.listDebito.FormattingEnabled = true;
+            this.listDebito.ItemHeight = 16;
+            this.listDebito.Location = new System.Drawing.Point(645, 75);
+            this.listDebito.Name = "listDebito";
+            this.listDebito.Size = new System.Drawing.Size(218, 324);
+            this.listDebito.TabIndex = 3;
+            // 
+            // btnDebito
+            // 
+            this.btnDebito.Location = new System.Drawing.Point(645, 30);
+            this.btnDebito.Name = "btnDebito";
+            this.btnDebito.Size = new System.Drawing.Size(153, 39);
+            this.btnDebito.TabIndex = 4;
+            this.btnDebito.Text = "Debito";
+            this.btnDebito.UseVisualStyleBackColor = true;
+            // 
+            // Form1
+            // 
+            this.ClientSize = new System.Drawing.Size(1398, 497);
+            this.Controls.Add(this.btnDebito);
+            this.Controls.Add(this.listDebito);
+            this.Controls.Add(this.listSoci);
+            this.Controls.Add(this.btnSegreteria);
+            this.Controls.Add(this.listSegreteria);
+            this.Name = "Form1";
+            this.ResumeLayout(false);
 
         }
+
+        private void btnSegreteria_Click_1(object sender, EventArgs e)
+        {
+            //  visualizza i soci della segreteria
+            List<Socio> segreteriaSoci = soci.Where(s => s.Segreteria).ToList();
+
+            listSegreteria.Items.Clear();
+            foreach (Socio segreteriaSocio in segreteriaSoci)
+            {
+                listSegreteria.Items.Add($"{segreteriaSocio.Cognome}, {segreteriaSocio.Nome} - Tel: {segreteriaSocio.Telefono}");
+            }
+        }
+
+      
     }
 }
