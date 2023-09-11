@@ -9,7 +9,7 @@ namespace BancaDelTempo_ferrari
 {
     public partial class Form1 : Form
     {
-        public List<Socio> utenti = new List<Socio>();
+        public List<Socio> soci = new List<Socio>();
         public List<Prestazione> prestazioni = new List<Prestazione>();
 
         public Form1()
@@ -17,15 +17,19 @@ namespace BancaDelTempo_ferrari
             InitializeComponent();
         }
 
-        
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+            LoadData();
+            UpdateUI();
+        }
 
         private void LoadData()
         {
             // Caricadati da file JSON
-            if (File.Exists("utenti.json")) 
+            if (File.Exists("soci.json")) 
             {
-                string utentiJson = File.ReadAllText("utenti.json");
-                utenti = JsonConvert.DeserializeObject<List<Socio>>(utentiJson);
+                string sociJson = File.ReadAllText("soci.json");
+                soci = JsonConvert.DeserializeObject<List<Socio>>(sociJson);
             }
 
             if (File.Exists("prestazioni.json"))
@@ -38,8 +42,8 @@ namespace BancaDelTempo_ferrari
         private void SaveData()
         {
             // Salva dati su file JSON
-            string utentiJson = JsonConvert.SerializeObject(utenti);
-            File.WriteAllText("utenti.json", utentiJson);
+            string sociJson = JsonConvert.SerializeObject(soci);
+            File.WriteAllText("soci.json",sociJson);
 
             string prestazioniJson = JsonConvert.SerializeObject(prestazioni);
             File.WriteAllText("prestazioni.json", prestazioniJson);
@@ -49,7 +53,7 @@ namespace BancaDelTempo_ferrari
         {
             // Aggiorna l'interfaccia grafica
             listSoci.Items.Clear();
-            foreach (Socio socio in utenti)
+            foreach (Socio socio in soci)
             {
                 listSoci.Items.Add($"{socio.Cognome}, {socio.Nome} - Tel: {socio.Telefono}");
             }
@@ -78,7 +82,7 @@ namespace BancaDelTempo_ferrari
             this.listSegreteria.ItemHeight = 16;
             this.listSegreteria.Location = new System.Drawing.Point(12, 75);
             this.listSegreteria.Name = "listSegreteria";
-            this.listSegreteria.Size = new System.Drawing.Size(219, 324);
+            this.listSegreteria.Size = new System.Drawing.Size(302, 324);
             this.listSegreteria.TabIndex = 0;
             // 
             // btnSegreteria
@@ -95,23 +99,24 @@ namespace BancaDelTempo_ferrari
             // 
             this.listSoci.FormattingEnabled = true;
             this.listSoci.ItemHeight = 16;
-            this.listSoci.Location = new System.Drawing.Point(330, 75);
+            this.listSoci.Location = new System.Drawing.Point(365, 75);
             this.listSoci.Name = "listSoci";
-            this.listSoci.Size = new System.Drawing.Size(218, 324);
+            this.listSoci.Size = new System.Drawing.Size(302, 324);
             this.listSoci.TabIndex = 2;
+            this.listSoci.SelectedIndexChanged += new System.EventHandler(this.listSoci_SelectedIndexChanged);
             // 
             // listDebito
             // 
             this.listDebito.FormattingEnabled = true;
             this.listDebito.ItemHeight = 16;
-            this.listDebito.Location = new System.Drawing.Point(645, 75);
+            this.listDebito.Location = new System.Drawing.Point(726, 75);
             this.listDebito.Name = "listDebito";
-            this.listDebito.Size = new System.Drawing.Size(218, 324);
+            this.listDebito.Size = new System.Drawing.Size(302, 324);
             this.listDebito.TabIndex = 3;
             // 
             // btnDebito
             // 
-            this.btnDebito.Location = new System.Drawing.Point(645, 30);
+            this.btnDebito.Location = new System.Drawing.Point(726, 30);
             this.btnDebito.Name = "btnDebito";
             this.btnDebito.Size = new System.Drawing.Size(153, 39);
             this.btnDebito.TabIndex = 4;
@@ -123,14 +128,14 @@ namespace BancaDelTempo_ferrari
             // 
             this.listPrestazioni.FormattingEnabled = true;
             this.listPrestazioni.ItemHeight = 16;
-            this.listPrestazioni.Location = new System.Drawing.Point(956, 75);
+            this.listPrestazioni.Location = new System.Drawing.Point(1084, 75);
             this.listPrestazioni.Name = "listPrestazioni";
-            this.listPrestazioni.Size = new System.Drawing.Size(218, 324);
+            this.listPrestazioni.Size = new System.Drawing.Size(302, 324);
             this.listPrestazioni.TabIndex = 5;
             // 
             // btnPrestazioni
             // 
-            this.btnPrestazioni.Location = new System.Drawing.Point(956, 30);
+            this.btnPrestazioni.Location = new System.Drawing.Point(1084, 30);
             this.btnPrestazioni.Name = "btnPrestazioni";
             this.btnPrestazioni.Size = new System.Drawing.Size(153, 39);
             this.btnPrestazioni.TabIndex = 6;
@@ -140,7 +145,7 @@ namespace BancaDelTempo_ferrari
             // 
             // btnRicarica
             // 
-            this.btnRicarica.Location = new System.Drawing.Point(1248, 212);
+            this.btnRicarica.Location = new System.Drawing.Point(643, 434);
             this.btnRicarica.Name = "btnRicarica";
             this.btnRicarica.Size = new System.Drawing.Size(114, 51);
             this.btnRicarica.TabIndex = 7;
@@ -169,7 +174,7 @@ namespace BancaDelTempo_ferrari
         private void btnSegreteria_Click_1(object sender, EventArgs e)
         {
             //  visualizza i soci della segreteria
-            List<Socio> segreteriaSoci = utenti.Where(s => s.Segreteria).ToList();
+            List<Socio> segreteriaSoci = soci.Where(s => s.Segreteria).ToList();
 
             listSegreteria.Items.Clear();
             foreach (Socio segreteriaSocio in segreteriaSoci)
@@ -181,7 +186,7 @@ namespace BancaDelTempo_ferrari
         private void btnDebito_Click_1(object sender, EventArgs e)
         {
             // produce l'elenco dei soci con debito
-            List<Socio> debitori = utenti.Where(s => s.CalcolaDebito() > 0).ToList();
+            List<Socio> debitori = soci.Where(s => s.CalcolaDebito() > 0).ToList();
 
             listDebito.Items.Clear();
             foreach (Socio debitor in debitori)
@@ -208,10 +213,9 @@ namespace BancaDelTempo_ferrari
             UpdateUI();
         }
 
-        private void Form1_Load_1(object sender, EventArgs e)
+        private void listSoci_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadData();
-            UpdateUI();
+
         }
     }
 }
