@@ -8,6 +8,9 @@
         private System.Windows.Forms.ListBox listSoci;
         private System.Windows.Forms.ListBox listDebito;
         private System.Windows.Forms.Button btnDebito;
+        private System.Windows.Forms.ListBox listPrestazioni;
+        private System.Windows.Forms.Button btnPrestazioni;
+        private System.Windows.Forms.Button btnRicarica;
     }
 }
 

@@ -9,7 +9,7 @@ namespace BancaDelTempo_ferrari
 {
     public partial class Form1 : Form
     {
-        public List<Socio> soci = new List<Socio>();
+        public List<Socio> utenti = new List<Socio>();
         public List<Prestazione> prestazioni = new List<Prestazione>();
 
         public Form1()
@@ -17,20 +17,15 @@ namespace BancaDelTempo_ferrari
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            LoadData();
-            UpdateUI();
-
-        }
+        
 
         private void LoadData()
         {
-            // Caricare dati da file JSON
-            if (File.Exists("soci.json"))
+            // Caricadati da file JSON
+            if (File.Exists("utenti.json")) 
             {
-                string sociJson = File.ReadAllText("soci.json");
-                soci = JsonConvert.DeserializeObject<List<Socio>>(sociJson);
+                string utentiJson = File.ReadAllText("utenti.json");
+                utenti = JsonConvert.DeserializeObject<List<Socio>>(utentiJson);
             }
 
             if (File.Exists("prestazioni.json"))
@@ -42,9 +37,9 @@ namespace BancaDelTempo_ferrari
 
         private void SaveData()
         {
-            // Salvare dati su file JSON
-            string sociJson = JsonConvert.SerializeObject(soci);
-            File.WriteAllText("soci.json", sociJson);
+            // Salva dati su file JSON
+            string utentiJson = JsonConvert.SerializeObject(utenti);
+            File.WriteAllText("utenti.json", utentiJson);
 
             string prestazioniJson = JsonConvert.SerializeObject(prestazioni);
             File.WriteAllText("prestazioni.json", prestazioniJson);
@@ -52,47 +47,14 @@ namespace BancaDelTempo_ferrari
 
         private void UpdateUI()
         {
-            // Aggiornare la visualizzazione dei dati nell'interfaccia grafica
+            // Aggiorna l'interfaccia grafica
             listSoci.Items.Clear();
-            foreach (Socio socio in soci)
+            foreach (Socio socio in utenti)
             {
                 listSoci.Items.Add($"{socio.Cognome}, {socio.Nome} - Tel: {socio.Telefono}");
             }
         }
-
-        private void btnDebito_Click(object sender, EventArgs e)
-        {
-            // Logica per produrre l'elenco dei soci con debito
-            List<Socio> debitori = soci.Where(s => s.CalcolaDebito() > 0).ToList();
-
-            listDebito.Items.Clear();
-            foreach (Socio debitor in debitori)
-            {
-                listDebito.Items.Add($"{debitor.Cognome}, {debitor.Nome} | Debito: {debitor.Debito}");
-            }
-        }
-
-       
-
-        private void btnOrdinaPrestazioni_Click(object sender, EventArgs e)
-        {
-            //  ordina e visualizza le prestazioni
-            List<Prestazione> prestazioniOrdinate = prestazioni.OrderByDescending(p => p.Ore).ToList();
-
-            listPrestazioni.Items.Clear();
-            foreach (Prestazione prestazione in prestazioniOrdinate)
-            {
-                listPrestazioni.Items.Add($"{prestazione.Erogatore.Cognome}, {prestazione.Erogatore.Nome} -> {prestazione.Ricevente.Cognome}, {prestazione.Ricevente.Nome} - {prestazione.Ore} ore di {prestazione.Tipo}");
-            }
-        }
-
-        private void btnReload_Click(object sender, EventArgs e)
-        {
-            LoadData();
-            UpdateUI();
-        }
-
-       
+    
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             SaveData();
@@ -105,6 +67,9 @@ namespace BancaDelTempo_ferrari
             this.listSoci = new System.Windows.Forms.ListBox();
             this.listDebito = new System.Windows.Forms.ListBox();
             this.btnDebito = new System.Windows.Forms.Button();
+            this.listPrestazioni = new System.Windows.Forms.ListBox();
+            this.btnPrestazioni = new System.Windows.Forms.Button();
+            this.btnRicarica = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listSegreteria
@@ -152,16 +117,51 @@ namespace BancaDelTempo_ferrari
             this.btnDebito.TabIndex = 4;
             this.btnDebito.Text = "Debito";
             this.btnDebito.UseVisualStyleBackColor = true;
+            this.btnDebito.Click += new System.EventHandler(this.btnDebito_Click_1);
+            // 
+            // listPrestazioni
+            // 
+            this.listPrestazioni.FormattingEnabled = true;
+            this.listPrestazioni.ItemHeight = 16;
+            this.listPrestazioni.Location = new System.Drawing.Point(956, 75);
+            this.listPrestazioni.Name = "listPrestazioni";
+            this.listPrestazioni.Size = new System.Drawing.Size(218, 324);
+            this.listPrestazioni.TabIndex = 5;
+            // 
+            // btnPrestazioni
+            // 
+            this.btnPrestazioni.Location = new System.Drawing.Point(956, 30);
+            this.btnPrestazioni.Name = "btnPrestazioni";
+            this.btnPrestazioni.Size = new System.Drawing.Size(153, 39);
+            this.btnPrestazioni.TabIndex = 6;
+            this.btnPrestazioni.Text = "Prestazioni";
+            this.btnPrestazioni.UseVisualStyleBackColor = true;
+            this.btnPrestazioni.Click += new System.EventHandler(this.btnPrestazioni_Click);
+            // 
+            // btnRicarica
+            // 
+            this.btnRicarica.Location = new System.Drawing.Point(1248, 212);
+            this.btnRicarica.Name = "btnRicarica";
+            this.btnRicarica.Size = new System.Drawing.Size(114, 51);
+            this.btnRicarica.TabIndex = 7;
+            this.btnRicarica.Text = "RICARICA";
+            this.btnRicarica.UseVisualStyleBackColor = true;
+            this.btnRicarica.Click += new System.EventHandler(this.btnRicarica_Click);
             // 
             // Form1
             // 
+            this.BackColor = System.Drawing.Color.MistyRose;
             this.ClientSize = new System.Drawing.Size(1398, 497);
+            this.Controls.Add(this.btnRicarica);
+            this.Controls.Add(this.btnPrestazioni);
+            this.Controls.Add(this.listPrestazioni);
             this.Controls.Add(this.btnDebito);
             this.Controls.Add(this.listDebito);
             this.Controls.Add(this.listSoci);
             this.Controls.Add(this.btnSegreteria);
             this.Controls.Add(this.listSegreteria);
             this.Name = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load_1);
             this.ResumeLayout(false);
 
         }
@@ -169,7 +169,7 @@ namespace BancaDelTempo_ferrari
         private void btnSegreteria_Click_1(object sender, EventArgs e)
         {
             //  visualizza i soci della segreteria
-            List<Socio> segreteriaSoci = soci.Where(s => s.Segreteria).ToList();
+            List<Socio> segreteriaSoci = utenti.Where(s => s.Segreteria).ToList();
 
             listSegreteria.Items.Clear();
             foreach (Socio segreteriaSocio in segreteriaSoci)
@@ -178,6 +178,40 @@ namespace BancaDelTempo_ferrari
             }
         }
 
-      
+        private void btnDebito_Click_1(object sender, EventArgs e)
+        {
+            // produce l'elenco dei soci con debito
+            List<Socio> debitori = utenti.Where(s => s.CalcolaDebito() > 0).ToList();
+
+            listDebito.Items.Clear();
+            foreach (Socio debitor in debitori)
+            {
+                listDebito.Items.Add($"{debitor.Cognome}, {debitor.Nome} | Debito: {debitor.Debito}");
+            }
+        }
+
+        private void btnPrestazioni_Click(object sender, EventArgs e)
+        {
+            //  ordina e visualizza le prestazioni
+            List<Prestazione> prestazioniOrdinate = prestazioni.OrderByDescending(p => p.Ore).ToList();
+
+            listPrestazioni.Items.Clear();
+            foreach (Prestazione prestazione in prestazioniOrdinate)
+            {
+                listPrestazioni.Items.Add($"{prestazione.Erogatore.Cognome}, {prestazione.Erogatore.Nome} -> {prestazione.Ricevente.Cognome}, {prestazione.Ricevente.Nome} - {prestazione.Ore} ore di {prestazione.Tipo}");
+            }
+        }
+
+        private void btnRicarica_Click(object sender, EventArgs e)
+        {
+            LoadData();
+            UpdateUI();
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+            LoadData();
+            UpdateUI();
+        }
     }
 }

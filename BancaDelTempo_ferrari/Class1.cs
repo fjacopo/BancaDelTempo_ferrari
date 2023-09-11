@@ -13,7 +13,7 @@ namespace BancaDelTempo_ferrari
         public string _nome;
         public double _telefono;
         public int _debito;
-        public bool _segreteria; //true se il socio fa parte della segreteria
+        public bool _segreteria; //true se l'utente fa parte della segreteria
 
         [JsonProperty]
         public string Cognome
