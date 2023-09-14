@@ -115,12 +115,9 @@ namespace BancaDelTempo_ferrari
             Prestazioni = new List<Prestazione>();
         }
        
-        public void AggiungiPrestazione(Prestazione prestazione)
-        {
-            Prestazioni.Add(prestazione);
-        }
 
-        //  saldo del socio 
+
+        
         public int CalcolaDebito()
         {
             int oreErogate = 0;
@@ -128,18 +125,27 @@ namespace BancaDelTempo_ferrari
 
             foreach (Prestazione prestazione in Prestazioni)
             {
+                //se l'erogatore della prestazione è uguale all'oggetto corrette (quello nel file che legge) il numero di ore erogate viene incrementato
                 if (prestazione.Erogatore.Equals(this))
                 {
                     oreErogate += prestazione.Ore;
                 }
+                //se il ricevente della prestazione è uguale all'oggetto corrente il numero di ore ricevute viene incrementato
                 else if (prestazione.Ricevente.Equals(this))
                 {
                     oreRicevute += prestazione.Ore;
                 }
             }
 
+            // restituisce la differenza tra il numero di ore erogate e quelle ricevute 
+
             this.Debito = oreRicevute - oreErogate;
             return this.Debito;
+        }
+
+        public void AggiungiPrestazione(Prestazione prestazione)
+        {
+            Prestazioni.Add(prestazione);
         }
 
         protected Socio(Socio other) : this(other.Cognome, other.Nome, other.Telefono, other.Debito, other.Segreteria)
