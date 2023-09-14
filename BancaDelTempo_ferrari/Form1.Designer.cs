@@ -10,6 +10,13 @@
         private System.Windows.Forms.ListBox listPrestazioni;
         private System.Windows.Forms.Button btnPrestazioni;
         private System.Windows.Forms.Button btnRicarica;
+        private System.Windows.Forms.Button btnaggiungi;
+        private System.Windows.Forms.TextBox cognometextbox;
+        private System.Windows.Forms.TextBox teltextbox;
+        private System.Windows.Forms.TextBox nometextbox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 
