@@ -221,17 +221,7 @@ namespace BancaDelTempo_ferrari
 
         private void listPrestazioni_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedIndex = listPrestazioni.SelectedIndex;
-            if (selectedIndex >= 0)
-            {
-                listPrestazioni.Items.RemoveAt(selectedIndex); // Rimuovi l'elemento dalla ListBox
-
-                // Aggiorna il file JSON con la nuova lista
-                List<string> items = new List<string>();
-                items.AddRange(listPrestazioni.Items.Cast<string>());
-                string jsonContent = JsonConvert.SerializeObject(items);
-                File.WriteAllText("prestazioni.json", jsonContent);
-            }
+            
         }
     }
 }
