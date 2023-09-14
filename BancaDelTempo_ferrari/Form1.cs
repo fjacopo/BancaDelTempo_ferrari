@@ -133,7 +133,6 @@ namespace BancaDelTempo_ferrari
             this.listPrestazioni.Size = new System.Drawing.Size(302, 324);
             this.listPrestazioni.TabIndex = 5;
             this.listPrestazioni.SelectedIndexChanged += new System.EventHandler(this.listPrestazioni_SelectedIndexChanged);
-            this.listPrestazioni.DoubleClick += new System.EventHandler(this.listPrestazioni_DoubleClick);
             // 
             // btnPrestazioni
             // 
@@ -205,7 +204,7 @@ namespace BancaDelTempo_ferrari
             listPrestazioni.Items.Clear();
             foreach (Prestazione prestazione in prestazioniOrdinate)
             {
-                listPrestazioni.Items.Add($"{prestazione.Erogatore.Cognome} {prestazione.Erogatore.Nome} per {prestazione.Ricevente.Cognome} {prestazione.Ricevente.Nome} - {prestazione.Ore} ore di {prestazione.Tipo}");
+                listPrestazioni.Items.Add($"{prestazione.Erogatore.Cognome}, {prestazione.Erogatore.Nome} -> {prestazione.Ricevente.Cognome}, {prestazione.Ricevente.Nome} - {prestazione.Ore} ore di {prestazione.Tipo}");
             }
         }
 
@@ -221,11 +220,6 @@ namespace BancaDelTempo_ferrari
         }
 
         private void listPrestazioni_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listPrestazioni_DoubleClick(object sender, EventArgs e)
         {
             int selectedIndex = listPrestazioni.SelectedIndex;
             if (selectedIndex >= 0)
